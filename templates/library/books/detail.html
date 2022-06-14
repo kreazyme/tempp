@@ -20,13 +20,13 @@
                         15px 8px 2px #26282c;
         " />
     <div class="my-3 py-3" style="margin-left: 32%;">
-        <h2 class="display-5 d-flex align-items-start gap-4">
+        <h2 class="display-5 d-flex align-items-start justify-content-start gap-4" style="margin-right: 15%;">
             {{ book.title }}
-            <button type="button" class="btn btn-outline-dark btn-sm">{{ book.category }}</button>
+            <button type="button" class="btn btn-outline-dark btn-sm" style="min-width: fit-content;">{{ book.category }}</button>
         </h2>
         <p class="lead">{{ book.author }}</p>
     </div>
-    <div class="bg-dark text-light shadow-sm mx-auto d-flex flex-column py-4 align-items-start justify-content-center gap-4" style="height: 300px; border-radius: 21px 21px 0 0; padding-left: 32%; padding-right: 15%;">
+    <div class="bg-dark text-light shadow-sm mx-auto d-flex flex-column py-4 align-items-start justify-content-center gap-4" style="border-radius: 21px 21px 0 0; padding-left: 32%; padding-right: 15%;">
         <div>{{ book.description }}</div>
         <button type="button" class="btn btn-outline-light">Borrow this book</button>
     </div>
