@@ -3,9 +3,13 @@ from .models import Category, Book
 
 # Create your views here.
 
-def book_all(request):
+def home(request):
     books = Book.objects.all()
     return render(request, 'library/home.html', {'books': books})
+
+def book_all(request):
+    books = Book.objects.all()
+    return render(request, 'library/books/index.html', {'books': books})
 
 def book_detail(request, slug):
     book = get_object_or_404(Book, slug=slug)
