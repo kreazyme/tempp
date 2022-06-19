@@ -1,3 +1,4 @@
+from django.http import JsonResponse
 from django.shortcuts import render, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from .models import Category, Book
@@ -36,3 +37,28 @@ def book_searching(req):
     }
     
     return render(req, 'library/books/index.html', context)
+
+
+def favourite_all(request):
+    books = request.user.favourite_books.all()
+    return render(request, 'library/favourite/favourite.html', {'books': books})
+
+
+def favourite_add(request):
+    if request.POST.get('action') == 'post':
+        book_id = int(request.POST.get('book_id'))
+        book = get_object_or_404(Book, id=book_id)
+        book.favourite.add(request.user)
+        favourite_quantity = request.user.favourite_books.all().count()
+        response = JsonResponse({'favourite_quantity': favourite_quantity})
+        return response
+
+
+def favourite_delete(request):
+    if request.POST.get('action') == 'post':
+        book_id = int(request.POST.get('book_id'))
+        book = get_object_or_404(Book, id=book_id)
+        book.favourite.remove(request.user)
+        favourite_quantity = request.user.favourite_books.all().count()
+        response = JsonResponse({'favourite_quantity': favourite_quantity})
+        return response
