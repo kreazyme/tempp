@@ -11,7 +11,7 @@
         <div class="container">
             <div class="col row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
 
-                {% for book in favourite.favourite.values %}
+                {% for book in books %}
 
                 <div data-index="{{book.id}}" class="row" style="width: 100%;">
                     <a href="{{ book.get_absolute_url }}" class="text-decoration-none text-dark">
@@ -58,7 +58,7 @@
             e.preventDefault();
             $.ajax({
                 type: 'POST',
-                url: '{% url "favourite:favourite_delete" %}',
+                url: '{% url "books:favourite_delete" %}',
                 data: {
                     'book_id': $('#btn-delete-favourite').val(),
                     'csrfmiddlewaretoken': '{{ csrf_token }}',
