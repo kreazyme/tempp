@@ -24,6 +24,11 @@ class Book(models.Model):
     image_url = models.URLField(blank=True, default='https://hips.hearstapps.com/hmg-prod/images/old-books-arranged-on-shelf-royalty-free-image-1572384534.jpg?crop=0.668xw:1.00xh;0,0&resize=2048:*')
     slug = models.SlugField(max_length=255, unique=True)
     quantity = models.IntegerField(default=1)
+    favourite = models.ManyToManyField(
+        'auth.User',
+        related_name='favourite_books',
+        blank=True
+    )
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 

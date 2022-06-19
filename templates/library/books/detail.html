@@ -53,7 +53,7 @@
         e.preventDefault();
         $.ajax({
             type: 'POST',
-            url: '{% url "favourite:favourite_add" %}',
+            url: '{% url "books:favourite_add" %}',
             data: {
                 'book_id': $('#btn-add-favorite').val(),
                 'csrfmiddlewaretoken': '{{ csrf_token }}',
