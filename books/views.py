@@ -19,7 +19,12 @@ def book_all(request):
 
 def book_detail(request, slug):
     book = get_object_or_404(Book, slug=slug)
-    return render(request, 'library/books/detail.html', {'book': book})
+    is_favourite = book.favourite.filter(id=request.user.id).exists()
+    context = {
+        'book': book,
+        'is_favourite': is_favourite,
+    }
+    return render(request, 'library/books/detail.html', context)
 
 
 def book_filter_by_category(request, slug):
@@ -50,7 +55,12 @@ def favourite_add(request):
         book = get_object_or_404(Book, id=book_id)
         book.favourite.add(request.user)
         favourite_quantity = request.user.favourite_books.all().count()
-        response = JsonResponse({'favourite_quantity': favourite_quantity})
+        is_favourite = book.favourite.filter(id=request.user.id).exists()
+        context = {
+            'favourite_quantity': favourite_quantity,
+            'is_favourite': is_favourite,
+        }
+        response = JsonResponse(context)
         return response
 
 
@@ -60,5 +70,10 @@ def favourite_delete(request):
         book = get_object_or_404(Book, id=book_id)
         book.favourite.remove(request.user)
         favourite_quantity = request.user.favourite_books.all().count()
-        response = JsonResponse({'favourite_quantity': favourite_quantity})
+        is_favourite = book.favourite.filter(id=request.user.id).exists()
+        context = {
+            'favourite_quantity': favourite_quantity,
+            'is_favourite': is_favourite,
+        }
+        response = JsonResponse(context)
         return response
