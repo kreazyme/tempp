@@ -23,10 +23,6 @@
                 <label for="email" class="form-label">Email</label>
                 <input type="text" name="email" class="form-control" id="email" value="{{ user.email }}" required>
             </div> 
-            <div class="d-flex flex-column">
-                <label for="password" class="form-label">Password*</label>
-                <input type="password" name="password" class="form-control" id="password" placeholder = "Use only strong password" required>
-            </div> 
             <div>
                 <input type="submit" value="Update Info" class="btn btn-dark">
                 <a href="{% url 'books:book_all' %}" class="btn btn-outline-dark">Home</a>

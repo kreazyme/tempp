@@ -2,20 +2,19 @@ from django.shortcuts import get_object_or_404, render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 
-import user_auth
 from .forms import CreateUserForm, UpdateUserForm
 
 # Create your views here.
 
 
-def register_account(req):
-    if req.user.is_authenticated:
+def register_account(request):
+    if request.user.is_authenticated:
         return redirect('books:home')
 
     form = CreateUserForm()
 
-    if req.method == 'POST':
-        form = CreateUserForm(req.POST)
+    if request.method == 'POST':
+        form = CreateUserForm(request.POST)
         if form.is_valid():
             form.save()
             return redirect('user_auth:login')
@@ -24,38 +23,42 @@ def register_account(req):
         'form': form,
     }
 
-    return render(req, 'registration/register.html', context)
+    return render(request, 'registration/register.html', context)
 
 
-def login_account(req):
-    if req.user.is_authenticated:
+def login_account(request):
+    if request.user.is_authenticated:
         return redirect('books:home')
 
-    if req.method == 'POST':
-        username = req.POST.get('username')
-        password = req.POST.get('password')
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        password = request.POST.get('password')
         user = authenticate(username=username, password=password)
 
         if user is not None:
-            login(req, user)
+            login(request, user)
             return redirect('books:home')
 
-    return render(req, 'registration/login.html')
+    return render(request, 'registration/login.html')
 
 
-def edit_account(req):
-    user = get_object_or_404(User, username = req.user)
-    userform = UpdateUserForm(req.POST or None, instance = user)
-    if req.method == 'POST':
-        if userform.is_valid:
+def edit_account(request):
+    user = get_object_or_404(User, username=request.user)
+    userform = UpdateUserForm(request.POST or None, instance=user)
+
+    if request.method == 'POST':
+        if userform.is_valid():
             userform.save()
             return redirect('books:home')
+
     context = {
         'form': userform,
         'user': user,
     }
-    return render(req, 'registration/edit_user.html', context)
 
-def logout_account(req):
-    logout(req)
+    return render(request, 'registration/edit_user.html', context)
+
+
+def logout_account(request):
+    logout(request)
     return redirect('user_auth:login')
