@@ -1,9 +1,5 @@
-from getpass import getuser
-from typing_extensions import Required
 from django.shortcuts import get_object_or_404, render, redirect
 from django.contrib.auth import authenticate, login, logout
-from matplotlib.style import use
-from requests import request
 from django.contrib.auth.models import User
 
 import user_auth
