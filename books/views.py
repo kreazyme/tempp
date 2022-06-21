@@ -1,7 +1,8 @@
 from django.http import JsonResponse
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
-from .models import Category, Book
+import datetime
+from .models import Category, Book, History
 
 # Create your views here.
 
@@ -33,15 +34,15 @@ def book_filter_by_category(request, slug):
     return render(request, 'library/books/category.html', {'category': category, 'books': books})
 
 
-def book_searching(req):
-    keyword = req.GET.get('keyword')
+def book_searching(request):
+    keyword = request.GET.get('keyword')
     books = Book.objects.filter(title__icontains=keyword)
     context = {
         'keyword': keyword,
         'books': books.order_by('title'),
     }
-    
-    return render(req, 'library/books/index.html', context)
+
+    return render(request, 'library/books/index.html', context)
 
 
 def favourite_all(request):
@@ -50,7 +51,7 @@ def favourite_all(request):
 
 
 def favourite_add(request):
-    if request.POST.get('action') == 'post':
+    if request.POST.get('action') == 'POST':
         book_id = int(request.POST.get('book_id'))
         book = get_object_or_404(Book, id=book_id)
         book.favourite.add(request.user)
@@ -65,7 +66,7 @@ def favourite_add(request):
 
 
 def favourite_delete(request):
-    if request.POST.get('action') == 'post':
+    if request.POST.get('action') == 'POST':
         book_id = int(request.POST.get('book_id'))
         book = get_object_or_404(Book, id=book_id)
         book.favourite.remove(request.user)
@@ -77,3 +78,30 @@ def favourite_delete(request):
         }
         response = JsonResponse(context)
         return response
+
+
+def history_of_user(request):
+    if request.method == 'POST':
+        print(request.POST)
+        book_id = request.POST.get('borrowed')
+        book = get_object_or_404(Book, id=book_id)
+        
+        if book.is_in_stock:
+            user = request.user
+            history = History(user=user, book=book, date_expired=datetime.datetime.now() + datetime.timedelta(days=7))
+            history.save()
+            book.quantity -= 1
+            book.save()
+            message = "You have successfully borrowed the book."
+        else:
+            message = "Sorry, this book is not available." 
+    
+    
+    history = History.objects.filter(user=request.user)
+    history_quantity = history.count()
+    context = {
+        'history': history,
+        'history_quantity': history_quantity
+    }
+
+    return render(request, 'library/history/index.html', context)

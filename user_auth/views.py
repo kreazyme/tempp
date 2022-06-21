@@ -15,7 +15,6 @@ def register_account(req):
         form = CreateUserForm(req.POST)
         if form.is_valid():
             form.save()
-            user = form.cleaned_data.get('username')
             return redirect('user_auth:login')
 
     context = {
@@ -38,8 +37,7 @@ def login_account(req):
             login(req, user)
             return redirect('books:home')
 
-    context = {}
-    return render(req, 'registration/login.html', context)
+    return render(req, 'registration/login.html')
 
 
 def logout_account(req):
