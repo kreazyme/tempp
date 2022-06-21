@@ -50,23 +50,27 @@
                 </div>
             </div>
 
-            <div class="modal fade" id="confirmBorrowModal" tabindex="-1" aria-labelledby="confirmBorrowModalLabel" aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="confirmBorrowModalLabel">Confirm borrow</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                            Do you want to borrow <strong>"{{book.title}}"</strong>?
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-outline-dark" data-bs-dismiss="modal">Close</button>
-                            <button id="btn-borrow-book" value="{{ book.id }}" type="button" class="btn btn-dark">Borrow</button>
+            <form class="form" method="post" action="{% url 'books:history_of_user' %}">  {% csrf_token %}
+                <div class="modal fade" id="confirmBorrowModal" tabindex="-1" aria-labelledby="confirmBorrowModalLabel"
+                    aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="confirmBorrowModalLabel">Confirm borrow</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                Do you want to borrow <strong>"{{book.title}}"</strong>?
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-outline-dark" data-bs-dismiss="modal">Close</button>
+                                <button id="btn-borrow-book" value="{{ book.id }}" name="borrowed" type="submit"
+                                    class="btn btn-dark">Borrow</button>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
+            </form>
 
             {% endfor %}
 
@@ -88,22 +92,6 @@
             success: function (json) {
                 document.getElementById('favourite_quantity').innerHTML = json.favourite_quantity;
                 $('[data-index="' + $('#btn-delete-favourite').val() + '"]').remove();
-            },
-            error: function (xhr, errmsg, err) { },
-        })
-    })
-
-    $(document).on('click', '#btn-borrow-book', function (e) {
-        e.preventDefault();
-        $.ajax({
-            type: 'POST',
-            url: '{% url "books:history_of_user" %}',
-            data: {
-                'book_id': $('#btn-borrow-book').val(),
-                'csrfmiddlewaretoken': '{{ csrf_token }}',
-                action: 'POST',
-            },
-            success: function (json) {
             },
             error: function (xhr, errmsg, err) { },
         })
