@@ -1,6 +1,13 @@
-from django.shortcuts import render, redirect
+from getpass import getuser
+from typing_extensions import Required
+from django.shortcuts import get_object_or_404, render, redirect
 from django.contrib.auth import authenticate, login, logout
-from .forms import CreateUserForm
+from matplotlib.style import use
+from requests import request
+from django.contrib.auth.models import User
+
+import user_auth
+from .forms import CreateUserForm, UpdateUserForm
 
 # Create your views here.
 
@@ -39,6 +46,19 @@ def login_account(req):
 
     return render(req, 'registration/login.html')
 
+
+def edit_account(req):
+    user = get_object_or_404(User, username = req.user)
+    userform = UpdateUserForm(req.POST or None, instance = user)
+    if req.method == 'POST':
+        if userform.is_valid:
+            userform.save()
+            return redirect('books:home')
+    context = {
+        'form': userform,
+        'user': user,
+    }
+    return render(req, 'registration/edit_user.html', context)
 
 def logout_account(req):
     logout(req)
