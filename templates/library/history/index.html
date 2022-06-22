@@ -14,6 +14,7 @@
                     <th scope="col">Title</th>
                     <th scope="col">Date borrowed</th>
                     <th scope="col">Date expired</th>
+                    <th scope="col">Date returned</th>
                 </tr>
             </thead>
             <tbody class="table-group-divider">
@@ -25,6 +26,7 @@
                     <td>{{ book.title }}</td>
                     <td>{{ item.date_borrowed }}</td>
                     <td>{{ item.date_expired }}</td>
+                    <td>{% if item.date_returned %}{{ item.date_returned }}{% else %}Borrowing{% endif %}</td>
                 </tr>
 
                 {% endwith %}
