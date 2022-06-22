@@ -11,7 +11,6 @@
         <table class="table table-bordered border-dark table-striped table-hover">
             <thead class="table-dark">
                 <tr>
-                    <th scope="col">#</th>
                     <th scope="col">Title</th>
                     <th scope="col">Date borrowed</th>
                     <th scope="col">Date expired</th>
@@ -23,7 +22,6 @@
                 {% with book=item.book %}
 
                 <tr>
-                    <th scope="row">{{ book.id }}</th>
                     <td>{{ book.title }}</td>
                     <td>{{ item.date_borrowed }}</td>
                     <td>{{ item.date_expired }}</td>
