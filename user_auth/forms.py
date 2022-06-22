@@ -13,14 +13,6 @@ class CreateUserForm(UserCreationForm):
         'class': 'form-control',
     }))
 
-    first_name = forms.CharField(max_length=256, required=True, widget=forms.TextInput(attrs={
-        'class': 'form-control',
-    }))
-
-    last_name = forms.CharField(max_length=256, required=True, widget=forms.TextInput(attrs={
-        'class': 'form-control',
-    }))
-
     password1 = forms.CharField(max_length=256, required=True, widget=forms.PasswordInput(attrs={
         'class': 'form-control',
     }))
@@ -31,8 +23,7 @@ class CreateUserForm(UserCreationForm):
 
     class Meta:
         model = User
-        fields = ['username', 'email', 'password1',
-                  'password2', 'first_name', 'last_name']
+        fields = ['username', 'email', 'password1', 'password2']
 
 
 class UpdateUserForm(UserChangeForm):
